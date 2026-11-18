@@ -169,6 +169,87 @@ p { text-wrap: pretty; }
   .on-dark .waypoint::before { background: var(--color-teal-deep); border-color: var(--color-sun); }
   .on-dark.path::before, .on-dark .path::before { border-color: var(--color-sun); }
 
+  /* Board member portrait: words rise over the photo on hover, focus or tap */
+  .person-portrait {
+    position: relative;
+    aspect-ratio: 10 / 11;
+    background:
+      radial-gradient(120% 80% at 50% 100%, var(--color-teal) 0%, transparent 70%),
+      var(--color-teal-soft);
+    isolation: isolate;
+  }
+  .person-portrait > img {
+    object-position: bottom;
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s;
+  }
+  .person-words {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 1.5rem 1.4rem 1.6rem;
+    color: var(--color-paper);
+    background: linear-gradient(to top, rgb(14 69 77 / 0.97) 0%, rgb(14 69 77 / 0.9) 55%, rgb(14 69 77 / 0.55) 100%);
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  .person-words p {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.45;
+    opacity: 0;
+    transform: translateY(1.25rem);
+    transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .person-toggle {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    cursor: pointer;
+    border-radius: inherit;
+  }
+  /* Small quote badge that tells visitors there is more to see */
+  .person-hint {
+    position: absolute;
+    right: 0.9rem;
+    bottom: 0.9rem;
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 999px;
+    background: var(--color-sun);
+    color: var(--color-ink);
+    box-shadow: 0 6px 16px -6px rgb(31 26 21 / 0.45);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
+  }
+  .person-hint-mark {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    line-height: 1;
+    transform: translateY(0.35rem);
+  }
+
+  /* Open state: a tap (touch screens), keyboard focus, or hover (devices that have it) */
+  .person[data-open="true"] .person-words,
+  .person:has(.person-toggle:focus-visible) .person-words { clip-path: inset(0 0 0 0); }
+  .person[data-open="true"] .person-words p,
+  .person:has(.person-toggle:focus-visible) .person-words p { opacity: 1; transform: none; transition-delay: 0.15s; }
+  .person[data-open="true"] .person-portrait > img,
+  .person:has(.person-toggle:focus-visible) .person-portrait > img { transform: scale(1.05); filter: saturate(0.6); }
+  .person[data-open="true"] .person-hint,
+  .person:has(.person-toggle:focus-visible) .person-hint { transform: scale(0.6); opacity: 0; }
+  .person-toggle:focus-visible { outline-offset: -4px; }
+  @media (hover: hover) {
+    .person:hover .person-words { clip-path: inset(0 0 0 0); }
+    .person:hover .person-words p { opacity: 1; transform: none; transition-delay: 0.15s; }
+    .person:hover .person-portrait > img { transform: scale(1.05); filter: saturate(0.6); }
+    .person:hover .person-hint { transform: scale(0.6); opacity: 0; }
+    .person-toggle { cursor: default; }
+  }
+
   /* Long-form text coming from WordPress */
   .prose-wp {
     font-size: 1.125rem;

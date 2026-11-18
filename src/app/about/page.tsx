@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BoardMember, type Member } from "@/components/BoardMember";
 import { GiveBand, PageHero, Photo, Quote } from "@/components/ui";
 import { links, media, photos } from "@/lib/site";
 
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
     "Friends of John Paul School is a volunteer-run U.S. charity. 97% of donated funds go directly to John Paul Secondary School in Uganda.",
 };
 
-const board = [
+const board: Member[] = [
   {
     name: "Liz Comerford",
     role: "President",
@@ -176,16 +177,10 @@ export default function About() {
           </div>
         </div>
 
-        <ul className="mt-20 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Flex rather than grid so a short last row sits centred */}
+        <ul className="mt-20 flex flex-wrap justify-center gap-x-8 gap-y-14 [&>li]:w-full sm:[&>li]:w-[calc(50%-1rem)] lg:[&>li]:w-[calc((100%-4rem)/3)]">
           {board.map((m) => (
-            <li key={m.name}>
-              <Photo src={m.photo} alt={m.name} shape="arch" className="aspect-square w-40" />
-              <h3 className="mt-5 text-2xl">{m.name}</h3>
-              <p className="text-sm text-muted">
-                <span className="font-semibold text-clay">{m.role}</span> · {m.place}
-              </p>
-              <p className="mt-3 text-muted">“{m.words}”</p>
-            </li>
+            <BoardMember key={m.name} member={m} />
           ))}
         </ul>
 
